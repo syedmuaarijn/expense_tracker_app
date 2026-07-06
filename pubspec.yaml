@@ -1,4 +1,4 @@
-name: chat_app_flutter
+name: expense_tracking_app_flutter
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -34,18 +34,10 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  passwordfield: ^0.2.0
-  email_textfield: ^0.0.1
-  email_validator: ^3.0.0
-  firebase_core: ^4.11.0
-  firebase_auth: ^6.5.4
-  supabase_flutter: ^2.15.2
-  provider: ^6.1.5+1
-  cached_network_image: ^3.4.1
   intl: ^0.20.3
-  uuid: ^4.5.3
-  shared_preferences: ^2.5.5
-  timeago: ^3.7.1
+  provider: ^6.1.5+1
+  collection: ^1.19.1
+  localstorage: ^6.0.0
 
 dev_dependencies:
   flutter_test:

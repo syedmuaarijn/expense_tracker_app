@@ -1,4 +1,4 @@
-# chat_app_flutter
+# expense_tracking_app_flutter
 
 A new Flutter project.
 

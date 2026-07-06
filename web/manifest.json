@@ -1,6 +1,6 @@
 {
-    "name": "chat_app_flutter",
-    "short_name": "chat_app_flutter",
+    "name": "expense_tracking_app_flutter",
+    "short_name": "expense_tracking_app_flutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
