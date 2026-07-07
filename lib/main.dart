@@ -64,6 +64,8 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:localstorage/localstorage.dart';
 import 'providers/expense_provider.dart';
@@ -72,6 +74,11 @@ import 'screens/splash_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initLocalStorage();
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.light,
+    systemNavigationBarColor: Colors.transparent,
+  ));
   runApp(
     ChangeNotifierProvider(
       create: (context) => ExpenseProvider(),
@@ -104,7 +111,7 @@ class TracklyApp extends StatelessWidget {
           primaryContainer: Color(0xFFEADCF5),
           onPrimaryContainer: Color(0xFF4C1D6F),
         ),
-        fontFamily: 'Roboto',
+        textTheme: GoogleFonts.dmSansTextTheme(ThemeData.light().textTheme),
         cardTheme: CardThemeData(
           color: Colors.white,
           elevation: 2,
@@ -125,7 +132,7 @@ class TracklyApp extends StatelessWidget {
           primaryContainer: Color(0xFF381F4A),
           onPrimaryContainer: Color(0xFFF0E5FA),
         ),
-        fontFamily: 'Roboto',
+        textTheme: GoogleFonts.dmSansTextTheme(ThemeData.dark().textTheme),
         cardTheme: CardThemeData(
           color: const Color(0xFF2A1637),
           elevation: 0,

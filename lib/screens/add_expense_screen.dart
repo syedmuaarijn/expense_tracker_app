@@ -239,7 +239,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _amountController,
-                decoration: InputDecoration(labelText: 'How much did you spend? (\$)', border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))),
+                decoration: InputDecoration(labelText: 'How much did you spend? (${provider.currency})', border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))),
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 validator: (v) => v == null || double.tryParse(v) == null || double.parse(v) <= 0 ? 'Please enter a correct number' : null,
               ),

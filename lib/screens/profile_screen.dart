@@ -11,10 +11,27 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
+// Common currencies: symbol → display label
+const _kCurrencies = {
+  '\$': 'USD – \$',
+  '€': 'EUR – €',
+  '£': 'GBP – £',
+  '¥': 'JPY – ¥',
+  '₹': 'INR – ₹',
+  '₩': 'KRW – ₩',
+  'CHF': 'CHF',
+  'A\$': 'AUD – A\$',
+  'C\$': 'CAD – C\$',
+  'AED': 'AED',
+  'SAR': 'SAR',
+  'PKR': 'PKR',
+};
+
 class _ProfileScreenState extends State<ProfileScreen> {
   final _nameController = TextEditingController();
   final _budgetController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  String _selectedCurrency = '\$';
 
   @override
   void initState() {
@@ -22,6 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final provider = Provider.of<ExpenseProvider>(context, listen: false);
     _nameController.text = provider.userName;
     _budgetController.text = provider.monthlyBudget.toString();
+    _selectedCurrency = provider.currency;
   }
 
   @override
@@ -36,6 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final provider = Provider.of<ExpenseProvider>(context, listen: false);
     provider.saveProfile(_nameController.text.trim());
     provider.updateBudget(double.parse(_budgetController.text.trim()));
+    provider.updateCurrency(_selectedCurrency);
     
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Profile settings committed successfully!')),
@@ -109,11 +128,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   provider.userName.isNotEmpty ? provider.userName : 'Trackly Account Holder',
                   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 4),
-                const Text(
-                  'Trackly Premium Account',
-                  style: TextStyle(color: Colors.grey, fontSize: 13),
-                ),
                 const SizedBox(height: 32),
 
                 // Textfields for parameters
@@ -131,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   controller: _budgetController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: 'Monthly Budget Limit (\$)',
+                  labelText: 'Monthly Budget Limit ($_selectedCurrency)',
                     prefixIcon: const Icon(Icons.wallet_outlined),
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
                   ),
@@ -139,11 +153,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const SizedBox(height: 16),
 
+                // ── Currency Selector ──
+                DropdownButtonFormField<String>(
+                  value: _selectedCurrency,
+                  decoration: InputDecoration(
+                    labelText: 'Currency',
+                    prefixIcon: const Icon(Icons.currency_exchange_outlined),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+                  ),
+                  items: _kCurrencies.entries.map((entry) {
+                    return DropdownMenuItem<String>(
+                      value: entry.key,
+                      child: Text(entry.value),
+                    );
+                  }).toList(),
+                  onChanged: (v) {
+                    if (v != null) setState(() => _selectedCurrency = v);
+                  },
+                ),
+                const SizedBox(height: 16),
+
                 ElevatedButton(
                   onPressed: _saveSettings,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: theme.colorScheme.primary,
-                    foregroundColor: Colors.white,
+                    foregroundColor: theme.brightness == Brightness.dark ? const Color(0xFF1B0B24) : Colors.white,
                     minimumSize: const Size.fromHeight(50),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),

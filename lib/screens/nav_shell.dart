@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
-import 'cash_flow_screen.dart';
 import 'stats_screen.dart';
 import 'profile_screen.dart';
+import 'expenses_screen.dart';
 import '../widgets/input_bottom_sheet.dart';
 
 class NavShell extends StatefulWidget {
@@ -17,7 +17,7 @@ class _NavShellState extends State<NavShell> {
 
   final List<Widget> _screens = const [
     HomeScreen(),
-    CashFlowScreen(),
+    ExpensesScreen(),
     StatsScreen(),
     ProfileScreen(),
   ];
@@ -28,11 +28,29 @@ class _NavShellState extends State<NavShell> {
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0.05, 0),
+              end: Offset.zero,
+            ).animate(CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOutCubic,
+            )),
+            child: FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+          );
+        },
+        child: KeyedSubtree(
+          key: ValueKey<int>(_currentIndex),
+          child: _screens[_currentIndex],
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: _currentIndex < 2 ? FloatingActionButton(
         onPressed: () {
           InputBottomSheet.show(context);
         },
@@ -40,8 +58,8 @@ class _NavShellState extends State<NavShell> {
         foregroundColor: Colors.white,
         elevation: 6,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: const Icon(Icons.qr_code_scanner_rounded, size: 28),
-      ),
+        child: const Icon(Icons.add_rounded, size: 30),
+      ) : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
@@ -59,17 +77,17 @@ class _NavShellState extends State<NavShell> {
                 children: [
                   _buildNavItem(
                     index: 0,
-                    icon: Icons.explore_outlined,
-                    activeIcon: Icons.explore,
-                    label: 'Discover',
+                    icon: Icons.home_outlined,
+                    activeIcon: Icons.home_rounded,
+                    label: 'Home',
                     theme: theme,
                   ),
                   const SizedBox(width: 24),
                   _buildNavItem(
                     index: 1,
                     icon: Icons.receipt_long_outlined,
-                    activeIcon: Icons.receipt_long,
-                    label: 'Receipts',
+                    activeIcon: Icons.receipt_long_rounded,
+                    label: 'Expenses',
                     theme: theme,
                   ),
                 ],
@@ -110,8 +128,8 @@ class _NavShellState extends State<NavShell> {
     required ThemeData theme,
   }) {
     final isSelected = _currentIndex == index;
-    final color = isSelected 
-        ? theme.colorScheme.primary 
+    final color = isSelected
+        ? theme.colorScheme.primary
         : (theme.brightness == Brightness.dark ? Colors.white60 : Colors.black45);
 
     return InkWell(

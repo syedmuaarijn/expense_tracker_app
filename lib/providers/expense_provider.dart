@@ -167,6 +167,7 @@ class ExpenseProvider with ChangeNotifier {
   bool _hasSeenOnboarding = false;
   bool _isDarkMode = true;
   double _monthlyBudget = 2000.0;
+  String _currency = "\$";
   bool _isInitialized = false;
 
   // Getters
@@ -178,6 +179,7 @@ class ExpenseProvider with ChangeNotifier {
   bool get hasSeenOnboarding => _hasSeenOnboarding;
   bool get isDarkMode => _isDarkMode;
   double get monthlyBudget => _monthlyBudget;
+  String get currency => _currency;
   bool get isInitialized => _isInitialized;
 
   ExpenseProvider() {
@@ -193,6 +195,7 @@ class ExpenseProvider with ChangeNotifier {
       _monthlyBudget =
           double.tryParse(localStorage.getItem('monthly_budget') ?? "2000.0") ??
           2000.0;
+      _currency = localStorage.getItem('currency') ?? "\$";
 
       final storedExpenses = localStorage.getItem('expenses');
       if (storedExpenses != null) {
@@ -242,6 +245,7 @@ class ExpenseProvider with ChangeNotifier {
     localStorage.setItem('has_onboarded', _hasSeenOnboarding.toString());
     localStorage.setItem('is_dark_mode', _isDarkMode.toString());
     localStorage.setItem('monthly_budget', _monthlyBudget.toString());
+    localStorage.setItem('currency', _currency);
     localStorage.setItem(
       'expenses',
       jsonEncode(_expenses.map((e) => e.toJson()).toList()),
@@ -276,6 +280,12 @@ class ExpenseProvider with ChangeNotifier {
 
   void updateBudget(double amount) {
     _monthlyBudget = amount;
+    _saveToStorage();
+    notifyListeners();
+  }
+
+  void updateCurrency(String currencyStr) {
+    _currency = currencyStr;
     _saveToStorage();
     notifyListeners();
   }

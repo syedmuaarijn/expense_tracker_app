@@ -158,7 +158,7 @@ class _CashFlowScreenState extends State<CashFlowScreen> with SingleTickerProvid
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          '${isPay ? "-" : "+"}\$${item.amount.toStringAsFixed(2)}',
+                          '${isPay ? "-" : "+"}${provider.currency}${item.amount.toStringAsFixed(2)}',
                           style: TextStyle(
                             fontWeight: FontWeight.w900,
                             fontSize: 16,
