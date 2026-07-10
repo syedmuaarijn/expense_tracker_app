@@ -19,10 +19,34 @@ class _HomeScreenState extends State<HomeScreen> {
   String? _selectedExpenseId;
   bool _isSearching = false;
   final _searchController = TextEditingController();
+  final _barScrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Scroll bar chart to show current month after the first frame.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToCurrentMonth());
+  }
+
+  void _scrollToCurrentMonth() {
+    if (!_barScrollController.hasClients) return;
+    final viewportWidth = _barScrollController.position.viewportDimension;
+    // Each bar takes 1/6 of the viewport width (matching the LayoutBuilder itemWidth).
+    final itemWidth = viewportWidth / 6;
+    final currentMonthIndex = DateTime.now().month - 1; // 0-based
+    // Center the current month bar in the viewport.
+    final targetOffset = (currentMonthIndex * itemWidth) - (viewportWidth / 2) + (itemWidth / 2);
+    _barScrollController.animateTo(
+      targetOffset.clamp(0.0, _barScrollController.position.maxScrollExtent),
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeOut,
+    );
+  }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _barScrollController.dispose();
     super.dispose();
   }
 
@@ -325,6 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         final itemWidth = constraints.maxWidth / 6;
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
+                          controller: _barScrollController,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.end,
