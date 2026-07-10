@@ -1,67 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:localstorage/localstorage.dart';
-// import 'providers/expense_provider.dart';
-// import 'screens/splash_screen.dart';
-
-// Future<void> main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await initLocalStorage();
-
-//   runApp(
-//     ChangeNotifierProvider(
-//       create: (context) => ExpenseProvider(),
-//       child: const TracklyApp(),
-//     ),
-//   );
-// }
-
-// class TracklyApp extends StatelessWidget {
-//   const TracklyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Trackly',
-//       debugShowCheckedModeBanner: false,
-      
-//       // Market-Level Carbon & Aqua Theme Config
-//       theme: ThemeData(
-//         brightness: Brightness.dark,
-//         scaffoldBackgroundColor: const Color(0xFF121212), // Deep Carbon Black
-//         colorScheme: const ColorScheme.dark(
-//           primary: Color(0xFF00E5FF),          // Vibrant Aqua Blue
-//           secondary: Color(0xFF00B4D8),        // Deep Turquoise
-//           surface: Color(0xFF1E1E1E),          // Secondary Carbon
-//           onSurface: Colors.white,
-//           primaryContainer: Color(0xFF1A2F35), // Subtle Aqua tint for cards
-//           onPrimaryContainer: Color(0xFFE0F7FA),
-//         ),
-//         cardTheme: CardThemeData(
-//           color: const Color(0xFF1E1E1E),
-//           elevation: 4,
-//           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-//         ),
-//         appBarTheme: const AppBarTheme(
-//           backgroundColor: Color(0xFF121212),
-//           elevation: 0,
-//           centerTitle: true,
-//           titleTextStyle: TextStyle(
-//             color: Color(0xFF00E5FF),
-//             fontSize: 22,
-//             fontWeight: FontWeight.bold,
-//             letterSpacing: 1.2,
-//           ),
-//         ),
-//         floatingActionButtonTheme: const FloatingActionButtonThemeData(
-//           backgroundColor: Color(0xFF00E5FF),
-//           foregroundColor: Color(0xFF121212),
-//         ),
-//       ),
-//       home: const SplashScreen(),
-//     );
-//   }
-// }
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -82,13 +18,13 @@ Future<void> main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => ExpenseProvider(),
-      child: const TracklyApp(),
+      child: const Trackly(),
     ),
   );
 }
 
-class TracklyApp extends StatelessWidget {
-  const TracklyApp({super.key});
+class Trackly extends StatelessWidget {
+  const Trackly({super.key});
 
   @override
   Widget build(BuildContext context) {
